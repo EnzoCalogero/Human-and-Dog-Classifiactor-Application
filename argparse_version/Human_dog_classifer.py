@@ -1,5 +1,3 @@
-## https://blog.keras.io/index.html
-# https://www.bogotobogo.com/python/python_argparse.php
 import argparse
 import sys
 
@@ -19,18 +17,21 @@ def output(img_path):
 
 
 def check_arg(args=None):
-    parser = argparse.ArgumentParser(description='Identify input parameters')
+    parser = argparse.ArgumentParser(description=
+                                     'Application to identify whether an image is a dog or a Human '
+                                     'and then give the prediction of the dog breed')
     parser.add_argument('-th', '--testHuman',
-                        help='Test with a Human image',
+                        help='Test the application with a Human image',
                         action="store_true",
                         required=False)
+
     parser.add_argument('-td', '--testDog',
-                        help='Test with a Dog image',
+                        help='Test the application with a Dog image',
                         action="store_true",
                         required=False)
 
     parser.add_argument('-f', '--file',
-                        help='filepath/file name')
+                        help='Give the image to be classified using the filepath/file name')
 
     results = parser.parse_args(args)
     return (results.testHuman,
@@ -39,10 +40,8 @@ def check_arg(args=None):
 
 if __name__ == '__main__':
     th, td, f = check_arg(sys.argv[1:])
-    print('th =', th)
-    print('td =', td)
-    print('f =', f)
     Resnet50_model = cl_lib.model()
+
     if th:
         output('../images/download.png')
     if td:
