@@ -1,10 +1,9 @@
 import os
 
 import cv2
-
 import flask
 import numpy as np
-from flask import request,render_template
+from flask import request, render_template
 from keras.applications import ResNet50
 from keras.applications import imagenet_utils
 from keras.applications.resnet50 import preprocess_input
@@ -17,11 +16,12 @@ from extract_bottleneck_features import *
 
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
-
-app.config['UPLOAD_FOLDER'] = 'static' #'Uploads'
+#  'Uploads folder'
+app.config['UPLOAD_FOLDER'] = 'static'
 
 model = None
 ResNet50_model_base = ResNet50(weights="imagenet")
+
 
 def load_model2():
     # load the pre-trained Keras model (here we are using a model
@@ -29,6 +29,7 @@ def load_model2():
     # substitute in your own networks just as easily)
     global ResNet50_model_base
     ResNet50_model_base = ResNet50(weights="imagenet")
+
 
 def load_model():
     Resnet50_model = Sequential()
@@ -39,20 +40,13 @@ def load_model():
     global model
     model = Resnet50_model
 
+
 def dognames():
     import json
     with open('../application_data/dog_names.json', 'r') as f:
         dog_names = json.load(f)
     return dog_names
 
-def path_to_tensor(img_path):
-    # loads RGB image as PIL.Image.Image type
-    img = image.load_img(img_path, target_size=(224, 224))
-    # convert PIL.Image.Image type to 3D tensor with shape (224, 224, 3)
-    x = image.img_to_array(img)
-    # convert 3D tensor to 4D tensor with shape (1, 224, 224, 3) and return 4D tensor
-    return np.expand_dims(x, axis=0)
-
 
 def path_to_tensor(img_path):
     # loads RGB image as PIL.Image.Image type
@@ -61,12 +55,14 @@ def path_to_tensor(img_path):
     x = image.img_to_array(img)
     # convert 3D tensor to 4D tensor with shape (1, 224, 224, 3) and return 4D tensor
     return np.expand_dims(x, axis=0)
+
 
 def ResNet50_predict_labels(img_path):
 
     # returns prediction vector for image located at img_path
     img = preprocess_input(path_to_tensor(img_path))
     return np.argmax(ResNet50_model_base.predict(img))
+
 
 def Resnet50_predict_breed(img_path, Resnet50_model=model):
     bottleneck_feature = extract_Resnet50(path_to_tensor(img_path))
@@ -77,6 +73,7 @@ def Resnet50_predict_breed(img_path, Resnet50_model=model):
     name = name.split('.')[1]
     probal = str(round((predicted_vector.flatten())[idx], 2))
     return name, probal
+
 
 def prepare_image(image, target):
     # if the image mode is not RGB, convert it
@@ -92,9 +89,11 @@ def prepare_image(image, target):
     # return the processed image
     return image
 
+
 def dog_detector(img_path):
     prediction = ResNet50_predict_labels(img_path)
-    return ((prediction <= 268) & (prediction >= 151))
+    return (prediction <= 268) & (prediction >= 151)
+
 
 def face_detector(img_path):
     face_cascade = cv2.CascadeClassifier('../application_data/haarcascade_frontalface_alt.xml')
@@ -102,6 +101,7 @@ def face_detector(img_path):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
     return len(faces) > 0
+
 
 @app.route("/", methods=['GET', 'POST'])
 def predict():
@@ -130,7 +130,7 @@ def predict():
                 # Populate the labels for the UI
                 if is_human & is_dog:
                     data["title"] = "Human or Dog!!!"
-                    data["breed"]="You are {}!".format(label)
+                    data["breed"] = "You are {}!".format(label)
                 elif is_human:
                     data["title"] = "Human!!!"
                     data["breed"] = "You look like a ... {}!".format(label)
@@ -141,7 +141,7 @@ def predict():
                     data["title"] = "You Do not look like a Human or a Dog!!!"
                     data["breed"] = "what ever you are you look like a .... {}!".format(label)
 
-                data["probability"] ="With a probability of {}%!".format( prob)
+                data["probability"] = "With a probability of {}%!".format(prob)
         # return case "post"
         return render_template('results.html', data=data)
     # return case "get"
