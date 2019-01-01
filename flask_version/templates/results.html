@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Classifiactor App</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Human/Dog Classifiactor App</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+               <li><a href="https://github.com/EnzoCalogero/Human-and-Dog-Classifiactor-Application/">Project Source</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="jumbotron">
+    <div class="container">
+        <h2 class="text-center">Human and Dog Classifiactor Application</h2>
+        <p class="text-center"This App identify wheter the uploaded image is a human or a dog....</p>
+        <p class="text-center">if the image contain a dog, identify for the dog breed ....</p>
+        <p class="text-center">if the image conatins a human, identify which dog breed is looks like.</p>
+    </div>
+    <div>
+  <h1 class="text-center">Hello, {{ data.title }}!</h1>
+  <h3 class="text-center"> You {{ data.breed }}!! </h3>
+
+  <div class="text-center">
+  <img src="{{ data.filepath}}" class="rounded .img-thumbnail" alt="...">
+</div>
+  <h3 class="text-center">....  {{ data.probability }}!!! </h3>
+
+</div>
+</div>
+
+
+</div>
+
+</body>
+</html>

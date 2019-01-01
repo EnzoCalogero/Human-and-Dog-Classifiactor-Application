@@ -1,8 +1,10 @@
 import os
 
+import cv2
+
 import flask
 import numpy as np
-from flask import request
+from flask import request,render_template
 from keras.applications import ResNet50
 from keras.applications import imagenet_utils
 from keras.applications.resnet50 import preprocess_input
@@ -16,7 +18,7 @@ from extract_bottleneck_features import *
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = 'Uploads'
+app.config['UPLOAD_FOLDER'] = 'static' #'Uploads'
 
 model = None
 ResNet50_model_base = ResNet50(weights="imagenet")
@@ -90,52 +92,63 @@ def prepare_image(image, target):
     # return the processed image
     return image
 
+def dog_detector(img_path):
+    prediction = ResNet50_predict_labels(img_path)
+    return ((prediction <= 268) & (prediction >= 151))
+
+def face_detector(img_path):
+    face_cascade = cv2.CascadeClassifier('../application_data/haarcascade_frontalface_alt.xml')
+    img = cv2.imread(img_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray)
+    return len(faces) > 0
+
 @app.route("/", methods=['GET', 'POST'])
 def predict():
-    data = {"success": False}
+    data = {"title": False}
     if request.method == 'POST':
-        # ensure an image was properly uploaded to our endpoint
-        #print(flask.request)
         if flask.request.method == "POST":
-            print("fase 1")
             if flask.request.files.get("file"):
+                # Up-load the image file
                 file = request.files['file']
                 filename = file.filename
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
-                #file=flask.request.files.get("file")
-                print(file)
-                print(filepath)
-                label, prob = Resnet50_predict_breed(img_path, Resnet50_model=model)
-                print(label)
-                print(prob)
+                data["filepath"] = filepath
 
-                r = {"Breed": label, "Probability": prob}
-                data["Dog"] = []
-                data["Dog"].append(r)
+                # is reconised as a Human?
+                is_human = face_detector(filepath)
+                data['is_human'] = is_human
 
-                # indicate that the request was a success
-                data["success"] = True
+                # is reconised as a Dog?
+                is_dog = dog_detector(filepath)
+                data["is_dog"] = is_dog
 
-        # return the data dictionary as a JSON response
-        return flask.jsonify(data)
-    return '''
-            <!doctype html>
-            <title>Upload new File</title>
-            <h1>Upload new File</h1>
-            <form method=post enctype=multipart/form-data>
-              <p><input type=file name=file>
-                 <input type=submit value=Upload>
-            </form>
-            '''
+                # identify the most similar dog breed for the image.
+                label, prob = Resnet50_predict_breed(filepath, Resnet50_model=model)
 
-# if this is the main thread of execution first load the model and
-# then start the server
+                # Populate the labels for the UI
+                if is_human & is_dog:
+                    data["title"] = "Human or Dog!!!"
+                    data["breed"]="You are {}!".format(label)
+                elif is_human:
+                    data["title"] = "Human!!!"
+                    data["breed"] = "You look like a ... {}!".format(label)
+                elif is_dog:
+                    data["title"] = "Dog!!!"
+                    data["breed"] = "You are {}!".format(label)
+                else:
+                    data["title"] = "You Do not look like a Human or a Dog!!!"
+                    data["breed"] = "what ever you are you look like a .... {}!".format(label)
+
+                data["probability"] ="With a probability of {}%!".format( prob)
+        # return case "post"
+        return render_template('results.html', data=data)
+    # return case "get"
+    return render_template('start.html')
+
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
            "please wait until server has fully started"))
     load_model()
-    img_path = '../images/Welsh_springer_spaniel_08203.jpg'
-    #print(Resnet50_predict_breed(img_path, Resnet50_model=model))
-    print(ResNet50_predict_labels(img_path))
     app.run()
