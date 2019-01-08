@@ -30,15 +30,15 @@ Then the final  algorithms have been implemented in two versions:  the argversio
   **To replicate the Jupiter Notebook**
 
 1. Clone the repository and navigate to the downloaded folder.
-2. ```bash
+ ```bash
    git clone https://github.com/EnzoCalogero/Human-and-Dog-Classification-Application.git
    cd  Human-and-Dog-Classification-Application
-   ```
+ ```
 
-3. Download the [dog dataset](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip). 	Unzip the folder and place it in the repo, at 	location `path/to/dog-project/dogImages`. 	The `dogImages/` folder 	should contain 133 folders, each corresponding to a different dog breed.
-4. Download the [human dataset](http://vis-www.cs.umass.edu/lfw/lfw.tgz). 	Unzip the folder and place it in the repo, at location `path/to/dog-project/lfw`. If you are using a Windows machine, you are encouraged to use [7zip](http://www.7-zip.org/) to extract the folder.
-5. Install the libraries listed on the paragraph below (Required Libraries).
-6. Open a terminal window and navigate to the project folder. Open the notebook and follow the instructions.
+2. Download the [dog dataset](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip). 	Unzip the folder and place it in the repo, at 	location `path/to/dog-project/dogImages`. 	The `dogImages/` folder 	should contain 133 folders, each corresponding to a different dog breed.
+3. Download the [human dataset](http://vis-www.cs.umass.edu/lfw/lfw.tgz). 	Unzip the folder and place it in the repo, at location `path/to/dog-project/lfw`. If you are using a Windows machine, you are encouraged to use [7zip](http://www.7-zip.org/) to extract the folder.
+4. Install the libraries listed on the paragraph below (Required Libraries).
+5. Open a terminal window and navigate to the project folder. Open the notebook and follow the instructions.
 
 ```bash
 jupyter notebook dog_app.ipynb
@@ -52,35 +52,35 @@ jupyter notebook dog_app.ipynb
 
 1. Clone the repository and navigate to the downloaded folder.
 
-2. ```bash
-     git clone https://github.com/EnzoCalogero/Human-and-Dog-Classification-Application.git
-       cd  Human-and-Dog-Classification-Application/flask_version
-     ```
+```bash
+ git clone https://github.com/EnzoCalogero/Human-and-Dog-Classification-Application.git
+ cd  Human-and-Dog-Classification-Application/flask_version
+```
+
+2. then run the following command:
   ```bash
-
-3. then run the following command:
-​```bash
-python new_app.py
+  python new_app.py
   ```
-4. Go to the browser at the URL ```127.0.0.1:5000```
 
-5. Upload an image by selecting one image file and click on the button labelled upload.
+3. Go to the browser at the URL ```127.0.0.1:5000```
+
+4. Upload an image by selecting one image file and click on the button labelled upload.
 
    ![first page flask](/images/flask_first_b.png)
 
-6. The result page will display whether is a dog or a human and which dog breed is most similar with an associated probability.
+5. The result page will display whether is a dog or a human and which dog breed is most similar with an associated probability.
 
-   ![result Page Flask]("/images/flask_second.png")
+   ![result Page Flask](/images/flask_second.png)
 
 **To replicate the argparse version...**
 
 1. Clone the repository and navigate to the downloaded folder.
-2. ```bash
+```bash
    git clone https://github.com/EnzoCalogero/Human-and-Dog-Classification-Application.git
    cd  Human-and-Dog-Classification-Application/argparse_version
-   ```
+```
 
-3. To Run the script we have 3 different parameters:
+2. To Run the script we have 3 different parameters:
     for a given file like the example below:
 ```bash
 	python  Human_dog_classifer.py -f ‘../images/Welsh_springer_spaniel_08203.jpg’
