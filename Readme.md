@@ -117,7 +117,7 @@ to test the application for dog
 
 ***arggarse_version/libs/classifer_lib.py***: all the functions required by the script  Human_dog_classifer.py.
 
-***flask_version/***: folder contains the flask version of the application.
+**flask_version/**: folder contains the flask version of the application.
 
 ***flask_version/new_app.py***: the script to run the flask version of the application.
 
@@ -129,7 +129,7 @@ to test the application for dog
 
 ***flask/Uploads***: where the application store the upload image file.
 
-***images/***: where all repository images are located.
+**images/**: where all repository images are located.
 
 
 
