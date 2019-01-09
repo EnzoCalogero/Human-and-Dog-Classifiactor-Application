@@ -48,5 +48,3 @@ if __name__ == '__main__':
         output('../images/Welsh_springer_spaniel_08203.jpg')
     if f:
         output(f)
-
-
